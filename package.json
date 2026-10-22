@@ -1,29 +1,34 @@
 {
-  "name": "pdf",
-  "displayName": "vscode-pdf",
-  "description": "Display pdf file in VSCode.",
-  "version": "1.2.2",
-  "publisher": "tomoki1207",
+  "name": "pdf-viewer",
+  "displayName": "PDF Viewer (PDF.js 6)",
+  "description": "View PDF files in VS Code, with an up-to-date PDF.js and a locked-down webview.",
+  "version": "2.0.0",
+  "publisher": "macromeer",
+  "license": "MIT",
   "engines": {
-    "vscode": "^1.46.0"
+    "vscode": "^1.123.0"
   },
   "categories": [
-    "Programming Languages"
+    "Visualization",
+    "Other"
   ],
   "keywords": [
     "pdf",
-    "viewer"
+    "viewer",
+    "preview",
+    "latex",
+    "typst"
   ],
   "icon": "vscode-pdf.png",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tomoki1207/vscode-pdfviewer.git"
+    "url": "https://github.com/macromeer/pdf-viewer.git"
   },
   "bugs": {
-    "url": "https://github.com/tomoki1207/vscode-pdfviewer/issues"
+    "url": "https://github.com/macromeer/pdf-viewer/issues"
   },
   "activationEvents": [
-    "onCustomEditor:pdf.preview"
+    "onCustomEditor:macromeer.pdfPreview"
   ],
   "main": "./out/src/extension",
   "contributes": {
@@ -34,8 +39,8 @@
     },
     "customEditors": [
       {
-        "viewType": "pdf.preview",
-        "displayName": "Pdf Preview",
+        "viewType": "macromeer.pdfPreview",
+        "displayName": "PDF Viewer",
         "selector": [
           {
             "filenamePattern": "*.pdf"
@@ -86,6 +91,12 @@
             "odd",
             "even"
           ]
+        },
+        "pdf-preview.closeOnDeleteDelay": {
+          "markdownDescription": "Milliseconds to wait before closing the preview when its file is deleted. If the file is recreated in the meantime (as many build tools do), the preview reloads instead. `-1` keeps the preview open.",
+          "type": "integer",
+          "default": 2000,
+          "minimum": -1
         }
       }
     }
@@ -95,27 +106,29 @@
     "compile": "tsc -p ./",
     "watch": "tsc -w -p ./",
     "pretest": "npm run compile",
-    "test": "node ./out/test/runTest.js",
-    "lint": "eslint -c .eslintrc.json --ext .ts ./src",
+    "test": "vscode-test",
+    "lint": "eslint src",
     "package": "vsce package"
   },
-  "dependencies": {
-    "@types/vscode": "^1.46.0"
-  },
   "devDependencies": {
-    "@types/mocha": "^10.0.1",
-    "@types/node": "^12.12.21",
-    "@typescript-eslint/eslint-plugin": "^2.28.0",
-    "@typescript-eslint/parser": "^2.28.0",
-    "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.10.1",
-    "eslint-plugin-prettier": "^3.1.3",
-    "mocha": "^10.1.0",
-    "prettier": "^2.0.4",
-    "typescript": "^3.7.3",
-    "vsce": "^2.15.0",
-    "vscode-dts": "^0.3.1",
-    "vscode-test": "^1.3.0"
+    "@eslint/js": "^10.0.1",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^20.19.43",
+    "@types/vscode": "~1.120.0",
+    "@vscode/test-cli": "^0.0.15",
+    "@vscode/test-electron": "^3.1.0",
+    "@vscode/vsce": "^4.0.0",
+    "eslint": "^10.13.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.7",
+    "prettier": "^3.9.10",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.72.0"
+  },
+  "overrides": {
+    "@vscode/test-cli": {
+      "mocha": "^12.0.3"
+    }
   },
   "extensionKind": [
     "ui"

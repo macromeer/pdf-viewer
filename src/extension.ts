@@ -1,11 +1,25 @@
 import * as vscode from 'vscode';
-import { PdfCustomProvider } from './pdfProvider';
+import { PdfCustomProvider, ViewerMessageEvent } from './pdfProvider';
+import { Settings } from './settings';
 
-export function activate(context: vscode.ExtensionContext): void {
-  const extensionRoot = vscode.Uri.file(context.extensionPath);
+export interface PdfPreviewApi {
+  // Used by the integration tests to observe the viewer
+  readonly onDidReceiveViewerMessage: vscode.Event<ViewerMessageEvent>;
+}
+
+export function activate(context: vscode.ExtensionContext): PdfPreviewApi {
+  const log = vscode.window.createOutputChannel('PDF Preview', { log: true });
   // Register our custom editor provider
-  const provider = new PdfCustomProvider(extensionRoot);
+  const settings = new Settings(context.extension.packageJSON, log);
+  const provider = new PdfCustomProvider(context.extensionUri, settings);
   context.subscriptions.push(
+    log,
+    provider,
+    provider.onDidReceiveViewerMessage(({ uri, message }) => {
+      if (message.type === 'error') {
+        log.error(`${uri.fsPath}: ${message.kind}\n${message.detail}`);
+      }
+    }),
     vscode.window.registerCustomEditorProvider(
       PdfCustomProvider.viewType,
       provider,
@@ -17,6 +31,7 @@ export function activate(context: vscode.ExtensionContext): void {
       }
     )
   );
+  return { onDidReceiveViewerMessage: provider.onDidReceiveViewerMessage };
 }
 
 export function deactivate(): void {}
