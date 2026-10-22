@@ -14,6 +14,9 @@ concurrency:
 jobs:
   release:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      release: ${{ steps.version.outputs.release }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
@@ -55,3 +58,14 @@ jobs:
         run: |
           gh release create "v$VERSION" *.vsix \
             --target "$GITHUB_SHA" --title "v$VERSION" --notes-file notes.md
+
+  open-vsx:
+    needs: release
+    if: needs.release.outputs.release == 'true'
+    permissions:
+      contents: read
+    uses: ./.github/workflows/publish-ovsx.yml
+    with:
+      tag: v${{ needs.release.outputs.version }}
+    secrets:
+      OVSX_PAT: ${{ secrets.OVSX_PAT }}
