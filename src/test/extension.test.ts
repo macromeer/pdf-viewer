@@ -11,7 +11,7 @@ const fixtures = path.resolve(__dirname, '../../../src/test/fixtures');
 
 async function getApi(): Promise<PdfPreviewApi> {
   const extension = vscode.extensions.getExtension<PdfPreviewApi>(
-    'macromeer.pdf-viewer'
+    'macromeer.pdfjs-viewer'
   );
   assert.ok(extension);
   return extension.activate();
@@ -252,7 +252,9 @@ suite('PDF preview', () => {
     };
 
     function settings(): Settings {
-      const extension = vscode.extensions.getExtension('macromeer.pdf-viewer');
+      const extension = vscode.extensions.getExtension(
+        'macromeer.pdfjs-viewer'
+      );
       assert.ok(extension);
       return new Settings(extension.packageJSON);
     }

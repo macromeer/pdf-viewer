@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.1 (2026/10/22)
+
+- Renamed to `macromeer.pdfjs-viewer`, because the VS Code Marketplace already has an extension named `pdf-viewer`. Version 2.0.0 was only released on GitHub, as `macromeer.pdf-viewer`; if you installed that VSIX, uninstall it first. No other changes.
+- The repository moved to [macromeer/pdfjs-viewer](https://github.com/macromeer/pdfjs-viewer).
+
 ## 2.0.0 (2026/10/22)
 
 First release of the maintained fork, published as `macromeer.pdf-viewer`. See the README for switching from `tomoki1207.pdf`.
