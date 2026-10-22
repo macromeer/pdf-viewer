@@ -127,16 +127,34 @@ async function openAndWait(api: PdfPreviewApi, uri: vscode.Uri): Promise<void> {
 }
 
 suite('PDF preview', () => {
+  // Right after startup the workbench may not know our custom editor yet and
+  // opens a PDF as text, so make sure the extension is up before any test
+  suiteSetup(async () => {
+    await getApi();
+  });
+
   teardown(async () => {
     await vscode.commands.executeCommand('workbench.action.closeAllEditors');
   });
 
   test('opens .pdf files in the PDF Viewer custom editor', async () => {
     const uri = vscode.Uri.file(path.join(fixtures, 'sample.pdf'));
-    await vscode.commands.executeCommand('vscode.open', uri);
+    let tab: vscode.Tab | undefined;
+    // Retry while the workbench still opens it as text (see suiteSetup)
+    for (let attempt = 0; attempt < 5; attempt++) {
+      await vscode.commands.executeCommand('vscode.open', uri);
+      tab = vscode.window.tabGroups.activeTabGroup.activeTab;
+      if (!(tab?.input instanceof vscode.TabInputText)) {
+        break;
+      }
+      await vscode.commands.executeCommand('workbench.action.closeAllEditors');
+      await new Promise((resolve) => setTimeout(resolve, 500));
+    }
 
-    const tab = vscode.window.tabGroups.activeTabGroup.activeTab;
-    assert.ok(tab?.input instanceof vscode.TabInputCustom);
+    assert.ok(
+      tab?.input instanceof vscode.TabInputCustom,
+      `Active tab: ${tab?.label} (${tab?.input?.constructor.name})`
+    );
     assert.strictEqual(tab.input.viewType, 'macromeer.pdfPreview');
     assert.strictEqual(tab.input.uri.toString(), uri.toString());
   });
