@@ -1,8 +1,8 @@
 {
-  "name": "pdf-viewer",
+  "name": "pdfjs-viewer",
   "displayName": "PDF Viewer (PDF.js 6)",
-  "description": "View PDF files in VS Code, with an up-to-date PDF.js and a locked-down webview.",
-  "version": "2.0.0",
+  "description": "Maintained fork of vscode-pdf: up-to-date PDF.js, auto-reload that keeps your place (LaTeX, Typst), and a locked-down webview.",
+  "version": "2.0.1",
   "publisher": "macromeer",
   "license": "MIT",
   "engines": {
@@ -15,17 +15,19 @@
   "keywords": [
     "pdf",
     "viewer",
+    "reader",
     "preview",
+    "pdfjs",
     "latex",
     "typst"
   ],
   "icon": "vscode-pdf.png",
   "repository": {
     "type": "git",
-    "url": "https://github.com/macromeer/pdf-viewer.git"
+    "url": "https://github.com/macromeer/pdfjs-viewer.git"
   },
   "bugs": {
-    "url": "https://github.com/macromeer/pdf-viewer/issues"
+    "url": "https://github.com/macromeer/pdfjs-viewer/issues"
   },
   "activationEvents": [
     "onCustomEditor:macromeer.pdfPreview"

@@ -39,7 +39,7 @@ The editor ID changed from `pdf.preview` to `macromeer.pdfPreview`. If your `wor
 - The webview has a strict Content Security Policy (nonce-only scripts, no inline scripts or styles) and can only read the extension's own files. The PDF is sent to it as bytes, so it has no access to the PDF's folder.
 - Messages between the webview and the extension are validated, and so are settings, which matters in untrusted workspaces.
 
-Please report security problems privately through [GitHub's security advisories](https://github.com/macromeer/pdf-viewer/security/advisories/new).
+Please report security problems privately through [GitHub's security advisories](https://github.com/macromeer/pdfjs-viewer/security/advisories/new).
 
 ## Development
 
