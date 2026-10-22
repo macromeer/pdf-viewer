@@ -62,7 +62,7 @@ scripts/update-pdfjs.sh <version> [sha256]
 
 The script downloads the release, checks its SHA-256, replaces `lib/build` and `lib/web` and records the version in `lib/PDFJS_VERSION`. `lib/main.js` (the integration) and `lib/pdf.css` are not touched. A monthly workflow opens an issue with the exact command when a new PDF.js release is out. Run the tests afterwards; `src/pdfPreview.ts` fails loudly if `viewer.html` changed in a way it can't handle.
 
-Releases are created automatically when a new version in `package.json` reaches `main`; the release notes come from `CHANGELOG.md`.
+Releases are created automatically when a new version in `package.json` reaches `main`; the release notes come from `CHANGELOG.md`. The release's VSIX is then published to Open VSX (`publish-ovsx.yml`, which can also be run by hand for an existing release). The VS Code Marketplace upload is manual.
 
 ## History and credits
 
